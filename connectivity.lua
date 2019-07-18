@@ -12,8 +12,8 @@ enableDebug()
 -- Global variables  
 FXPingFailCount=0
 FXRelayCount=0
-PVPingFailCount=0
-PVRelayCount=0
+-- PVPingFailCount=0
+-- PVRelayCount=0
 RouterPingFailCount=0 
 RouterRelayCount=0
 ModemPingFailCount=0
@@ -35,7 +35,7 @@ end
 function NewPingFileFunc()
 h=file.open(PingFileName,"a")  -- change to fileopen for Lua, with emluation function.
 h:write(Year.."-"..Month.."-"..Date.."PingLog\n")
-h:write("FXPingFailCount,PVPingFailCount,RouterPingFailCount,ModemPingFailCount\n")
+h:write("FXPingFailCount,RouterPingFailCount,ModemPingFailCount\n")
 h:close()
 end -- function
 
@@ -126,22 +126,22 @@ while true do
      end --pingresult=ping("192.168.60.1",5) 
 
 ----------------------------PV Mate 
-     if ping("192.168.60.1",5) == 1 then -- don't even bother to check Mate unless router is on-line  
-      if ping("192.168.60.102",5) == 1 then
-        PVPingFailCount=0 
-      else  -- not on line
-        PVPingFailCount=PVPingFailCount+1 
-      end -- pingresult 
-      ------time for action
-      if PVPingFailCount >= PingRetries and PVPingFailCount % PingRetries == 0 and PVRelayCount < RelayRetries then -- nth failure
-        pulse("io.relay3",5)
-        i=file.open(PingFileName,"a")  
-        i:write("Pulse relay 3\n")
-        i:close()
-        PVRelayCount = PVRelayCount + 1
-        emailFunc("usr.minister","PV Ping Failure.", "")
-      end -- PVpingCount > PingRetries...
-     end --pingresult=ping("192.168.60.1",5) 
+    --  if ping("192.168.60.1",5) == 1 then -- don't even bother to check Mate unless router is on-line  
+    --   if ping("192.168.60.102",5) == 1 then
+    --     PVPingFailCount=0 
+    --   else  -- not on line
+    --     PVPingFailCount=PVPingFailCount+1 
+    --   end -- pingresult 
+    --   ------time for action
+    --   if PVPingFailCount >= PingRetries and PVPingFailCount % PingRetries == 0 and PVRelayCount < RelayRetries then -- nth failure
+    --     pulse("io.relay3",5)
+    --     i=file.open(PingFileName,"a")  
+    --     i:write("Pulse relay 3\n")
+    --     i:close()
+    --     PVRelayCount = PVRelayCount + 1
+    --     emailFunc("usr.minister","PV Ping Failure.", "")
+    --   end -- PVpingCount > PingRetries...
+    --  end --pingresult=ping("192.168.60.1",5) 
     
 
 ---------------------------------Write lines in the file
@@ -154,8 +154,8 @@ while true do
       i:write(",")
       i:write(FXPingFailCount)
       i:write(",")
-      i:write(PVPingFailCount)
-      i:write(",")
+      -- i:write(PVPingFailCount)
+      -- i:write(",")
       i:write(RouterPingFailCount)
       i:write(",")
       i:write(ModemPingFailCount)
