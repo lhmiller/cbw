@@ -60,38 +60,38 @@ while true do
             -- printfunc("StopMinute = "..AMStopHour*60+AMStopMinute.." or "..PMStopHour*60+PMStopMinute)
 
             -- AM start       
-            if DayMinute == AMStartHour * 60 + AMStartMinute then
-                -- io.relay1 = 1--CBW
-                -- printfunc("        Generator Start")
+            if DayMinute == AMStartHour * 60 + AMStartMinute and reg.register21 == 1 then
+                io.relay1 = 1 --CBW
+                printfunc("        Generator Start")
                 MinAtTarget = 0
                 reg.register7 = MinAtTarget
                 -- AM Start
 
                 -- AM Stop
-            elseif DayMinute == AMStopHour * 60 + AMStopMinute then
-                -- io.relay1 = 0 --CBW
-                -- printfunc("        Generator Stop")
+            elseif DayMinute == AMStopHour * 60 + AMStopMinute and reg.register21 == 1 then
+                io.relay1 = 0 --CBW
+                printfunc("        Generator Stop")
                 -- AM Stop
 
                 -- PM Start
-            elseif DayMinute == PMStartHour * 60 + PMStartMinute then
-                -- io.relay1 = 1 --CBW
-                -- printfunc("        Generator Start")
+            elseif DayMinute == PMStartHour * 60 + PMStartMinute and reg.register22 == 1 then
+                io.relay1 = 1 --CBW
+                printfunc("        Generator Start")
                 MinAtTarget = 0
                 reg.register7 = MinAtTarget
                 -- PM Start   
 
                 -- PM Stop on voltage
-            elseif MinAtTarget > TargetMin then -- System Charge parameters must be set to achieve this goal
+            elseif MinAtTarget > TargetMin and reg.register22 == 1 then -- System Charge parameters must be set to achieve this goal
                 MinAtTarget = MinAtTarget - 1
-                -- io.relay1 = 0 --CBW
-                -- printfunc("        Generator Stop")
+                io.relay1 = 0 --CBW
+                printfunc("        Generator Stop")
                 -- PM Stop
 
                 -- PM Stop on time
-            elseif DayMinute == PMStopHour * 60 + PMStopMinute then
-                -- io.relay1 = 0 --CBW
-                -- printfunc("        Generator Stop")
+            elseif DayMinute == PMStopHour * 60 + PMStopMinute and reg.register22 == 1 then
+                io.relay1 = 0 --CBW
+                printfunc("        Generator Stop")
                 -- PM Stop      
 
             end --  test for start and stop conditions
@@ -99,7 +99,7 @@ while true do
             if BattV >= TargetV then --
                 MinAtTarget = MinAtTarget + 1
                 reg.register7 = MinAtTarget
-                -- printfunc("Min at target: "..MinAtTarget)
+                printfunc("Min at target: "..MinAtTarget)
             end -- if BattV >= TargetV
         end -- if Minute then
         MinuteLoop = false -- after once through, close the door
