@@ -49,7 +49,7 @@ while true do
     local TargetMin = reg.register6
     local DayMinute = Hour * 60 + Minute
     reg.register1 = io.battV -- CBW
-    reg.register2 = io.startCallV -- CBW
+    reg.register23 = io.startCallV -- CBW
     if Second == 0 then -- every minute loop
         if MinuteLoop then -- one time through every minute loop
             printfunc(" ")
